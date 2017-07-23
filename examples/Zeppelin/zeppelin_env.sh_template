@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# IMPORTANT: Before you make any changes to this file, ensure that you 
+#            stop Zeppelin with `./gradlew stop`
+#
+#            After making the change run `./gradlew UpdateEnv`, followed
+#            by `./gradlew start` or `./gradlew restart`
+
+export SPARK_HOME=/usr/iop/current/spark-client
+export HADOOP_CONF_DIR=/usr/iop/current/hadoop-client/conf
+
+SPARK_SUBMIT_OPTIONS=""
+SPARK_SUBMIT_OPTIONS="$SPARK_SUBMIT_OPTIONS --packages cloudant-labs:spark-cloudant:1.6.4-s_2.10"
+SPARK_SUBMIT_OPTIONS="$SPARK_SUBMIT_OPTIONS --packages com.databricks:spark-csv_2.10:1.2.0"
+
+# fix for http://www.ibm.com/support/knowledgecenter/SSPT3X_4.2.0/com.ibm.swg.im.infosphere.biginsights.product.doc/doc/bi_spark.html
+SPARK_SUBMIT_OPTIONS="$SPARK_SUBMIT_OPTIONS --jars /usr/iop/4.2.0.0/hive/lib/datanucleus-api-jdo-3.2.6.jar,/usr/iop/4.2.0.0/hive/lib/datanucleus-core-3.2.10.jar,/usr/iop/4.2.0.0/hive/lib/datanucleus-rdbms-3.2.9.jar"
+SPARK_SUBMIT_OPTIONS="$SPARK_SUBMIT_OPTIONS --files /usr/iop/current/spark-client/conf/hive-site.xml"
+
+export SPARK_SUBMIT_OPTIONS
+
+# If you want to use a different version of python, you could try setting the following
+# values to point to your python:
+#
+# export PYSPARK_PYTHON=/home/biadmin/anaconda2/bin/python2.7
+# export PYSPARK_DRIVER_PYTHON=/home/biadmin/anaconda2/bin/python2.7
+
+# WARNING: Zeppelin will listen for connections on this port and will not
+#          authenticate users.  Ensure the Zeppelin port is protected by a 
+#          firewall so that it is only available through a ssh tunnel to 
+#          the cluster.
+
+export ZEPPELIN_PORT=8080

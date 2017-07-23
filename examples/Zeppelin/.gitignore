@@ -1,0 +1,10 @@
+/bin/
+.classpath
+.project
+.settings/
+.pydevproject
+.cache-main
+truststore.jks
+zeppelin_env.sh
+Rprofile
+shiro.ini
